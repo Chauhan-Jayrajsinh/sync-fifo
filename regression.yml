@@ -1,0 +1,38 @@
+name: FIFO Regression
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  simulate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Icarus Verilog
+        run: sudo apt-get update && sudo apt-get install -y iverilog
+
+      - name: Compile design and testbench
+        run: iverilog -o sim.vvp -s tb_Sync_FIFO rtl/Sync_FIFO.v tb/tb_Sync_FIFO.v
+
+      - name: Run regression
+        run: vvp sim.vvp | tee regression_log.txt
+
+      - name: Check for failures
+        run: |
+          if grep -q "TOTAL ERRORS : 0" regression_log.txt && ! grep -q "RESULT: FAIL" regression_log.txt; then
+            echo "Regression PASSED"
+          else
+            echo "Regression FAILED"
+            exit 1
+          fi
+
+      - name: Upload regression log
+        uses: actions/upload-artifact@v4
+        with:
+          name: regression-log
+          path: regression_log.txt

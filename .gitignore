@@ -1,0 +1,17 @@
+# ModelSim
+work/
+transcript
+vsim.wlf
+*.mti
+
+# Icarus Verilog / GTKWave
+*.vvp
+*.vcd
+
+# Coverage
+coverage_report.txt
+report.txt
+
+# OS junk
+.DS_Store
+Thumbs.db
