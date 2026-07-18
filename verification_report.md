@@ -43,7 +43,7 @@ empty/refill transitions. Zero mismatches.
 ```
 
 ## Waveform Evidence
-See the [`diagrams/`](../diagrams/) folder and [`waveforms/`](../waveforms/)
+See the [`diagrams/`] folder and [`waveforms/`]README.md
 folder for:
 - Top-level I/O behavior (`clk`, `wr_en`, `rd_en`, `wr_data`, `rd_data`)
 - `full`/`empty` transitions at exact depth boundaries
