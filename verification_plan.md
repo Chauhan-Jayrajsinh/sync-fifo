@@ -2,7 +2,7 @@
 
 ## 1. Verification Objective
 Prove that `Sync_FIFO` meets [`design_spec.md`](design_spec.md) under normal operation,
-boundary conditions, and randomized stimulus — with zero silent data
+boundary conditions, and randomized stimulus — with zero silent data 
 corruption or flag mis-assertion.
 
 ## 2. Methodology
