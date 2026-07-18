@@ -43,13 +43,15 @@ empty/refill transitions. Zero mismatches.
 ```
 
 ## Waveform Evidence
-See `diagrams/` and the `waveforms/` folder (add your ModelSim screenshots
-there) for:
+See the [`diagrams/`](../diagrams/) folder and [`waveforms/`](../waveforms/)
+folder for:
 - Top-level I/O behavior (`clk`, `wr_en`, `rd_en`, `wr_data`, `rd_data`)
 - `full`/`empty` transitions at exact depth boundaries
 - Scoreboard pointer bookkeeping (`sb_wr_ptr`, `sb_rd_ptr`, `checks`, `errors`)
 
-## Known Gaps (see verification_plan.md §6)
+Full waveform captures with descriptions are in the main [`README.md`](../README.md#waveforms).
+
+## Known Gaps (see [`verification_plan.md`](verification_plan.md) §6)
 - No functional coverage collection (would require SystemVerilog).
 - No formal/assertion-based checking layer.
 - CDC behavior not applicable — this is a single-clock-domain design by spec.
