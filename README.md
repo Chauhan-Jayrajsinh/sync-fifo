@@ -1,9 +1,9 @@
 # Waveforms
 
 1. Reset and Read/Write Waveforms
-   i. Reset and First Write 
+i. Reset and First Write 
    <img width="967" height="350" alt="Screenshot 2026-07-19 002354" src="https://github.com/user-attachments/assets/5b024c09-a65e-4e0f-9caa-527fbc86c5e6" />
-   ii. First Read
+ii. First Read
    <img width="757" height="353" alt="Screenshot 2026-07-19 002915" src="https://github.com/user-attachments/assets/341a45ab-062f-4c66-82a9-168981a597e8" />
 
 2. Fill to FULL
