@@ -12,60 +12,52 @@
 // ============================================================
 
 module Sync_FIFO #(
-    parameter DATA_WIDTH = 8,
-    parameter FIFO_DEPTH = 16          // must be a power of 2
-) (
-    input  wire                    clk,
-    input  wire                    rst_n,
-    input  wire                    wr_en,
-    input  wire [DATA_WIDTH-1:0]   wr_data,
-    input  wire                    rd_en,
-    output reg  [DATA_WIDTH-1:0]   rd_data,
-    output wire                    full,
-    output wire                    empty
+parameter
+  DATA_WIDTH = 8,
+  FIFO_DEPTH = 16,
+  ADDR_WIDTH = $clog2(FIFO_DEPTH))
+ (
+  // Ports
+  input clk,rst_n, // Active LOW Reset
+  input wire wr_en,rd_en,
+  input wire [DATA_WIDTH-1:0] wr_data,
+  output reg [DATA_WIDTH-1:0] rd_data,
+  output wire full,empty // Status Flags
 );
 
-    localparam PTR_WIDTH = $clog2(FIFO_DEPTH);
-
-    // Memory array
-    reg [DATA_WIDTH-1:0] mem [0:FIFO_DEPTH-1];
-
-    // Pointers: one extra MSB beyond the address width.
-    // The extra bit is what distinguishes "wrapped all the way
-    // around" (full) from "caught back up" (empty) when the
-    // lower bits of wr_ptr and rd_ptr are equal.
-    reg [PTR_WIDTH:0] wr_ptr;
-    reg [PTR_WIDTH:0] rd_ptr;
-
-    wire [PTR_WIDTH-1:0] wr_addr = wr_ptr[PTR_WIDTH-1:0];
-    wire [PTR_WIDTH-1:0] rd_addr = rd_ptr[PTR_WIDTH-1:0];
-
-    // full: lower bits match but MSBs differ (wrote all the way around)
-    assign full  = (wr_ptr[PTR_WIDTH]     != rd_ptr[PTR_WIDTH]) &&
-                   (wr_ptr[PTR_WIDTH-1:0] == rd_ptr[PTR_WIDTH-1:0]);
-
-    // empty: pointers fully identical (including MSB)
-    assign empty = (wr_ptr == rd_ptr);
-
-    // Write logic
-    always @(posedge clk or negedge rst_n) begin
-        if (!rst_n) begin
-            wr_ptr <= 0;
-        end else if (wr_en && !full) begin
-            mem[wr_addr] <= wr_data;
-            wr_ptr       <= wr_ptr + 1'b1;
-        end
+// Pointers: one extra MSB beyond the address width.
+// The extra bit is what distinguishes "wrapped all the way
+// around" (full) from "caught back up" (empty) when the
+// lower bits of wr_ptr and rd_ptr are equal.
+reg [ADDR_WIDTH : 0]wptr , rptr;
+reg [DATA_WIDTH-1:0] mem [0 : FIFO_DEPTH - 1];
+always@(posedge clk or negedge rst_n) begin 
+  if(!rst_n) begin 
+    wptr <= 0;
+    rd_data <= 0;
+    rptr <= 0;   
+  end
+  
+  else begin // Pointer increment 
+     if(wr_en && !full) begin
+       wptr <= wptr + 1;
+       
+       // Memory Write
+       mem[wptr[ADDR_WIDTH - 1 : 0]] <= wr_data;
+     end
+     if(rd_en && !empty) begin
+       rptr <= rptr + 1;
+       
+       // Memory Read
+       rd_data <= mem[rptr[ADDR_WIDTH - 1 : 0]];
     end
-
-    // Read logic
-    always @(posedge clk or negedge rst_n) begin
-        if (!rst_n) begin
-            rd_ptr  <= 0;
-            rd_data <= {DATA_WIDTH{1'b0}};
-        end else if (rd_en && !empty) begin
-            rd_data <= mem[rd_addr];
-            rd_ptr  <= rd_ptr + 1'b1;
-        end
-    end
-
+  end
+end
+  
+// combinational flag logic — OUTSIDE the clocked block
+  // Full Condition
+  assign full = (wptr[ADDR_WIDTH] != rptr[ADDR_WIDTH]) && 
+                (wptr[ADDR_WIDTH - 1 : 0] == rptr[ADDR_WIDTH - 1 : 0]);
+    // Empty Condition
+       assign empty = (wptr == rptr);
 endmodule
