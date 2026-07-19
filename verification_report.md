@@ -43,13 +43,15 @@ empty/refill transitions. Zero mismatches.
 ```
 
 ## Waveform Evidence
-See the [`diagrams/`] folder and [`waveforms/`] [`README.md`](../README.md#waveforms)
-folder for:
+See [`fifo_block_diagram.svg`](fifo_block_diagram.svg),
+[`pointer_wraparound.svg`](pointer_wraparound.svg), and
+[`testbench_architecture.svg`](testbench_architecture.svg) for the design
+diagrams. Actual simulation waveform screenshots (reset, fill-to-full,
+drain-to-empty, wraparound stress, final PASS summary) are embedded in the
+main [`README.md`](README.md#waveforms) — covering:
 - Top-level I/O behavior (`clk`, `wr_en`, `rd_en`, `wr_data`, `rd_data`)
 - `full`/`empty` transitions at exact depth boundaries
 - Scoreboard pointer bookkeeping (`sb_wr_ptr`, `sb_rd_ptr`, `checks`, `errors`)
-
-Full waveform captures with descriptions are in the main [`README.md`](../README.md#waveforms).
 
 ## Known Gaps (see [`verification_plan.md`](verification_plan.md) §6)
 - No functional coverage collection (would require SystemVerilog).

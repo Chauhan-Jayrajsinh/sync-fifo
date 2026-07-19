@@ -4,7 +4,7 @@ A parameterizable synchronous FIFO in Verilog-2001, verified with a
 self-checking, scoreboard-based testbench. Built as an independent RTL/DV
 portfolio project — not from a guided course.
 
-![CI](https://github.com/Chauhan-Jayrajsinh/sync-fifo/actions/workflows/regression.yml/badge.svg)
+![CI](https://img.shields.io/badge/CI-move%20regression.yml%20to%20.github%2Fworkflows-orange)
 ![Language](https://img.shields.io/badge/RTL-Verilog--2001-blue)
 ![Sim](https://img.shields.io/badge/simulators-ModelSim%20%7C%20Icarus%20Verilog-lightgrey)
 ![License](https://img.shields.io/badge/license-MIT-green)
@@ -25,44 +25,41 @@ wrong. This project's verification plan specifically targets that boundary,
 not just basic read/write.
 
 ## Repository Structure
+Currently flat at repo root (a folder reorganization is planned — see note below):
 ```
 sync-fifo/
-├── rtl/
-│   └── Sync_FIFO.v              # DUT - parameterizable sync FIFO
-├── tb/
-│   └── tb_Sync_FIFO.v           # self-checking scoreboard testbench
-├── scripts/
-│   ├── sim.do                   # ModelSim automation script
-│   └── Makefile                 # Icarus Verilog + GTKWave flow (open-source alt.)
-├── diagrams/
-│   ├── fifo_block_diagram.svg
-│   ├── pointer_wraparound.svg
-│   └── testbench_architecture.svg
-├── docs/
-│   ├── design_spec.md           # what was built and why
-│   ├── verification_plan.md     # test plan matrix, written before/during coding
-│   └── verification_report.md   # results write-up
-├── waveforms/                   # add your ModelSim screenshots here
-└── .github/workflows/
-    └── regression.yml           # CI: auto-runs regression on every push
+├── Sync_FIFO.v                  # DUT - parameterizable sync FIFO
+├── tb_Sync_FIFO.v                # self-checking scoreboard testbench
+├── sim.do                        # ModelSim automation script
+├── Makefile                      # Icarus Verilog + GTKWave flow (open-source alt.)
+├── fifo_block_diagram.svg
+├── pointer_wraparound.svg
+├── testbench_architecture.svg
+├── design_spec.md                # what was built and why
+├── verification_plan.md          # test plan matrix, written before/during coding
+├── verification_report.md        # results write-up
+└── regression.yml                # CI workflow (needs to move into .github/workflows/ to activate)
 ```
+> **Note:** this repo is planned to move to an organized `rtl/`, `tb/`, `scripts/`,
+> `docs/`, `diagrams/` folder layout. Until then, all paths above are relative
+> to repo root.
 
 ## Design Overview
-See [`docs/design_spec.md`](docs/design_spec.md) for the full interface and
+See [`design_spec.md`](design_spec.md) for the full interface and
 functional spec. In short:
 
-![FIFO block diagram](diagrams/fifo_block_diagram.svg)
+![FIFO block diagram](fifo_block_diagram.svg)
 
 Full/empty uses the **extra-MSB pointer technique**:
 
-![Pointer wraparound](diagrams/pointer_wraparound.svg)
+![Pointer wraparound](pointer_wraparound.svg)
 
 ## Verification Approach
-See [`docs/verification_plan.md`](docs/verification_plan.md) for the full
+See [`verification_plan.md`](verification_plan.md) for the full
 test matrix (10 scenarios, corner cases explicitly called out) and
-[`docs/verification_report.md`](docs/verification_report.md) for results.
+[`verification_report.md`](verification_report.md) for results.
 
-![Testbench architecture](diagrams/testbench_architecture.svg)
+![Testbench architecture](testbench_architecture.svg)
 
 The testbench is self-checking: a behavioral array acts as a golden
 reference model, so pass/fail is computed automatically rather than
@@ -72,10 +69,9 @@ eyeballed from waveforms.
 
 ### Option A: ModelSim (any edition, including free ALTERA/Intel edition)
 ```tcl
-cd scripts
 vsim -c -do sim.do
 ```
-Or interactively: open ModelSim, `cd` into `scripts/`, then `do sim.do`.
+Or interactively: open ModelSim in this folder, then `do sim.do`.
 This compiles, elaborates, sets up the wave window with top-level I/O,
 internal pointers, and scoreboard signals, and runs to completion.
 
@@ -85,16 +81,14 @@ internal pointers, and scoreboard signals, and runs to completion.
 #   Ubuntu/Debian: sudo apt install iverilog gtkwave
 #   macOS:         brew install icarus-verilog gtkwave
 
-cd scripts
 make sim      # compile + run, prints PASS/FAIL to terminal
 make wave     # opens the waveform in GTKWave
 make clean    # remove generated files
 ```
 
 ### Option C: Automatic (CI)
-Every push to `main` triggers `.github/workflows/regression.yml`, which
-compiles and runs the full regression on Icarus Verilog and fails the build
-if `TOTAL ERRORS` isn't 0. Check the Actions tab for the log.
+Currently inactive — `regression.yml` needs to be moved into `.github/workflows/`
+for GitHub Actions to detect and run it (see note below).
 
 ## Sample Regression Log
 ```

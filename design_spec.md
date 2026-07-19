@@ -52,7 +52,7 @@ Two common approaches exist for full/empty disambiguation in a synchronous FIFO:
 **This design uses the extra-MSB technique** — it avoids a separate counter
 register and keeps full/empty as pure combinational pointer comparisons,
 which is the more common technique in industry FIFO IP.
-See <img width="1280" height="355" alt="Screenshot 2026-07-19 003607" src="https://github.com/user-attachments/assets/d3464a03-d6e6-4cc0-b2a1-4f68d39c4e51" /> for a worked example.
+See [`pointer_wraparound.svg`](pointer_wraparound.svg) for a worked example.
 
 ## 6. Known Limitations / Non-Goals
 - Single clock domain only — **not** safe for CDC (clock-domain-crossing) use.
