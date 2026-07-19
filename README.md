@@ -48,7 +48,7 @@ sync-fifo/
 See [`design_spec.md`](design_spec.md) for the full interface and
 functional spec. In short:
 
-![FIFO block diagram](file:///C:/Users/Chauhan%20Jayrajsinh%20N/OneDrive/Documents/GitHub/sync-fifo/diagrams/fifo_block_diagram.svg)
+![FIFO block diagram]("C:\Users\Chauhan Jayrajsinh N\OneDrive\Documents\GitHub\sync-fifo\diagrams\fifo_block_diagram.png")
 
 Full/empty uses the **extra-MSB pointer technique**:
 
