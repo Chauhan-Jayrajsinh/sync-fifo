@@ -52,14 +52,14 @@ functional spec. In short:
 
 Full/empty uses the **extra-MSB pointer technique**:
 
-![Pointer wraparound](file:///C:/Users/Chauhan%20Jayrajsinh%20N/OneDrive/Documents/GitHub/sync-fifo/diagrams/pointer_wraparound.svg)
+![Pointer wraparound](diagrams/pointer_wraparound.png)
 
 ## Verification Approach
 See [`verification_plan.md`](verification_plan.md) for the full
 test matrix (10 scenarios, corner cases explicitly called out) and
 [`verification_report.md`](verification_report.md) for results.
 
-![Testbench architecture](file:///C:/Users/Chauhan%20Jayrajsinh%20N/OneDrive/Documents/GitHub/sync-fifo/diagrams/testbench_architecture.svg)
+![Testbench architecture](diagrams/testbench_architecture.png)
 
 The testbench is self-checking: a behavioral array acts as a golden
 reference model, so pass/fail is computed automatically rather than
